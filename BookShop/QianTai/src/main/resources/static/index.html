@@ -39,7 +39,7 @@
                 <div class="col-md-6">
                     <ol class="breadcrumb">
                         <li v-for="type in bookTypeList" >
-                            <a href="" >{{type.name}}</a>
+                            <a href="" @click.prevent="seeBooksOfType(type)" >{{type.name}}</a>
                         </li>
 <!--                        <li >-->
 <!--                            <a href="" >历史</a>-->
@@ -129,6 +129,11 @@
                     .then((response)=>{
                         publicHeaderVue.bookTypeList = response.data;
                     })
+            }
+            ,
+            seeBooksOfType(type){
+                sessionStorage.setItem("bookType",JSON.stringify(type))
+                publicHeaderVue.refreshPublicContent("/booksOfType")
             }
         },
         created() {

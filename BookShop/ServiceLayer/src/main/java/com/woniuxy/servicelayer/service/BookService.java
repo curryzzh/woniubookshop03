@@ -1,5 +1,6 @@
 package com.woniuxy.servicelayer.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.woniuxy.dal.entity.Book;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -16,4 +17,6 @@ import java.util.List;
 public interface BookService extends IService<Book> {
 
     List<Book> topN(Integer n);
+
+    Page<Book> pageOfType(Long current, Long size, Long typeId);
 }

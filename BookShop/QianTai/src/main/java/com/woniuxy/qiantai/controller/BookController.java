@@ -1,6 +1,7 @@
 package com.woniuxy.qiantai.controller;
 
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.woniuxy.dal.entity.Book;
 import com.woniuxy.servicelayer.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +50,13 @@ public class BookController {
         bookService.updateById(echoBook);
 
         return currentBook;
+    }
+
+
+    @PostMapping("pageOfType")
+    public Page<Book> pageOfType(Long current, Long size, Long typeId){
+
+        return bookService.pageOfType(current,size,typeId);
     }
 
 
