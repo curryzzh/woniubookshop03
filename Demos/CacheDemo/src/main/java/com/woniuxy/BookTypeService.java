@@ -29,14 +29,17 @@ public class BookTypeService {
     }
 
     public void add(Booktype booktype){
+        booktypes = null;  //解决缓存一致性问题
         int insert = booktypeMapper.insert(booktype);
     }
 
     public void deleteById(Integer typeId){
+        booktypes = null;  //解决缓存一致性问题
         int i = booktypeMapper.deleteById(typeId);
     }
 
     public void updateById(Booktype booktype){
+        booktypes = null;  //解决缓存一致性问题
         int i = booktypeMapper.updateById(booktype);
     }
 
