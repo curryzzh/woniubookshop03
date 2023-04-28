@@ -23,7 +23,10 @@ public class BookTypeController {
     @RequestMapping("all")
     @ResponseBody
     public List<Booktype> all(){
+        long start = System.currentTimeMillis();
         List<Booktype> types = bookTypeService.getAll();
+        long end = System.currentTimeMillis();
+        System.out.println("bookTypeService.getAll 耗时 "+(end-start)+" ms");
         return types;
     }
 
