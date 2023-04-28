@@ -7,7 +7,15 @@ spring:
     password: root
   thymeleaf:
     cache: false
-
+  redis:
+    host: 192.168.217.138
+    port: 6379
+    jedis:
+      pool:
+        max-active: 30
+        max-idle: 10
+        min-idle: 3
+        max-wait: 3000
 
 
 
