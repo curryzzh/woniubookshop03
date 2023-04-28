@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>主页</title>
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+  <script th:src="@{/vue.js}"></script>
+</head>
+<body>
+
+
+<form id="app" action="/doAdd" method="post">
+  <input type="text" name="name">
+  <button type="submit">提交</button>
+</form>
+
+
+</body>
+</html>

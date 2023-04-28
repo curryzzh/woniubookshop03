@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>主页</title>
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+  <script th:src="@{/vue.js}"></script>
+</head>
+<body>
+
+<table id="app">
+  <tr>
+    <td>id</td>
+    <td>名称</td>
+    <td>创建时间</td>
+    <td>更新时间</td>
+    <td><a href="/add">新增</a></td>
+  </tr>
+  <tr v-for="type in types">
+    <td v-text="type.id"></td>
+    <td v-text="type.name"></td>
+    <td v-text="type.createtime"></td>
+    <td v-text="type.updatetime"></td>
+    <td>
+      <a :href="'/update?typeId='+type.id">修改</a>
+      <a :href="'/delete?typeId='+type.id">删除</a>
+    </td>
+  </tr>
+
+</table>
+
+<script>
+
+  new Vue({
+    el:"#app",
+    data:{
+      types:[]
+    },
+    methods:{
+      initTypes(){
+        let _this=this;
+        $.post("/all",function (data) {
+          _this.types= data;
+        },"json")
+      }
+    },
+    created(){
+      this.initTypes();
+    }
+  });
+
+
+</script>
+
+</body>
+</html>

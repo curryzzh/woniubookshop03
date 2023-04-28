@@ -20,6 +20,7 @@
         <module>BookShop/ServiceLayer</module>
         <module>BookShop/QianTai</module>
         <module>Demos/MyBatisPlusDemo</module>
+        <module>Demos/CacheDemo</module>
     </modules>
 
     <properties>
