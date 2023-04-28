@@ -69,4 +69,46 @@ public class CacheDemoMainTest {
 
     }
 
+    @Test
+    void testObject(){
+
+        //先获取到ops 操作对象
+        ValueOperations<Object, Object> opsForValue = objectObjectRedisTemplate.opsForValue();
+
+        Booktype booktype = new Booktype();
+        booktype.setId(5);
+        booktype.setName("历史");
+
+        opsForValue.set("booktype",booktype);
+
+
+        System.out.println( opsForValue.get("booktype") );
+
+    }
+
+
+    @Autowired
+    RedisTemplate<String,Object> stringObjectRedisTemplate;
+
+    @Test
+    void testObjectJSon(){
+
+        //先获取到ops 操作对象
+        ValueOperations<String, Object> opsForValue = stringObjectRedisTemplate.opsForValue();
+
+        Booktype booktype = new Booktype();
+        booktype.setId(5);
+        booktype.setName("历史");
+
+        opsForValue.set("booktype",booktype);
+
+
+        System.out.println( opsForValue.get("booktype") );
+
+    }
+
+
+
+
+
 }
