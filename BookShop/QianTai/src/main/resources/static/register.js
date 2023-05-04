@@ -34,6 +34,23 @@ let registerVue = new Vue({
           } )
 
     }
+    ,
+    registerUser(){
+      // 前端数据校验 ....
+
+      console.log(this.registerForm)
+
+      axios.postForm("/user/register",this.registerForm)
+          .then( response => {
+            let responseData = response.data;
+            if (responseData=="ok"){
+              alert("注册成功")
+            }else {
+              alert(responseData)
+            }
+          } )
+
+    }
 
   },
   created() {

@@ -1,14 +1,19 @@
 package com.woniuxy.qiantai.controller;
 
 
+import com.woniuxy.dal.entity.User;
+import com.woniuxy.servicelayer.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -27,6 +32,13 @@ public class UserController {
     @Autowired
     JavaMailSender javaMailSender;
 
+    @Autowired
+    StringRedisTemplate stringRedisTemplate;
+
+    @Autowired
+    UserService userService;
+
+
     @RequestMapping("/requestEmailCode")
     public String requestEmailCode(String email){
         //校验邮箱地址是否合法
@@ -44,6 +56,10 @@ public class UserController {
 
         //发送向邮箱发送验证码
         String Code = "0000";
+
+        //在Redis中存储数据设置ttl,时效内有效期控制
+        stringRedisTemplate.opsForValue().set(email,Code,5L, TimeUnit.MINUTES);
+
         sendEmail(email,"欢迎注册蜗牛书店","您的验证码是 "+Code+" ,有效期5分钟,请尽快使用");
 
         return "ok";
@@ -58,6 +74,41 @@ public class UserController {
         message.setText(content);
 
         javaMailSender.send(message);
+    }
+
+
+    @RequestMapping("register")
+    public String register(String username, String password, String repass, String email, String emailCode){
+
+        if (StringUtils.isEmpty(email)){
+            return "邮箱地址不能为空";
+        }
+
+        String redisEmailCode = stringRedisTemplate.opsForValue().get(email);
+        if (StringUtils.isEmpty(redisEmailCode) || StringUtils.isEmpty(emailCode) || !redisEmailCode.equals(emailCode)){
+            return "邮箱验证码非法";
+        }
+
+        if (StringUtils.isEmpty(password) || StringUtils.isEmpty(repass) || !password.equals(repass)){
+            return "密码未填写或两次输入不一致";
+        }
+
+        User userByName = userService.getUserByName(username);
+        if (userByName!=null){
+            return "用户名已经被占用";
+        }
+
+        //通过校验,写入新用户
+        User user = new User();
+        user.setAccount(username);
+        user.setPassword(password);
+        user.setEmail(email);
+        user.setCreatetime(new Date());
+        user.setUpdatetime(new Date());
+
+        userService.save(user);
+
+        return "ok";
     }
 
 

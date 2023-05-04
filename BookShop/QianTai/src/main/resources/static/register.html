@@ -30,7 +30,7 @@
             <input  v-model="registerForm.emailCode" type="text" name="emailCode" class="form-control" id="emailCode" placeholder="请输入邮箱验证码">
           </div>
 
-          <button class="btn btn-success">注册</button>
+          <button class="btn btn-success" @click.prevent="registerUser">注册</button>
         </form>
       </div>
     </div>
