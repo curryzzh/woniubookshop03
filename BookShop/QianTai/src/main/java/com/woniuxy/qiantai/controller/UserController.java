@@ -1,6 +1,7 @@
 package com.woniuxy.qiantai.controller;
 
 
+import com.google.code.kaptcha.Producer;
 import com.woniuxy.dal.entity.User;
 import com.woniuxy.servicelayer.service.UserService;
 import com.woniuxy.servicelayer.util.Md5Util;
@@ -13,6 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletResponse;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
@@ -38,6 +43,9 @@ public class UserController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    Producer producer;
 
 
     @RequestMapping("/requestEmailCode")
@@ -111,6 +119,20 @@ public class UserController {
         userService.save(user);
 
         return "ok";
+    }
+
+
+    @RequestMapping("getKaptchaCode")
+    public void getKaptchaCode(HttpServletResponse response) throws IOException {
+
+        //生成验证码
+        String code = producer.createText();
+        //验证码图片
+        BufferedImage bufferedImage = producer.createImage(code);
+
+        response.setContentType("image/jpeg");
+        ImageIO.write(bufferedImage,"jpg",response.getOutputStream());
+
     }
 
 

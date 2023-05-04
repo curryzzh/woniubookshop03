@@ -20,7 +20,7 @@
           <div class="form-group">
             <label for="code">验证码</label>
             <input type="text" name="code" class="form-control" id="code" placeholder="请输入验证码">
-            <a ><img src="" alt="..." id="codeImg" />点击刷新</a>
+            <a @click.prevent="refreshKaptchaCode"><img src="/user/getKaptchaCode" alt="..." id="codeImg" />点击刷新</a>
           </div>
 
           <button class="btn btn-success">登 录</button>

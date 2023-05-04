@@ -7,6 +7,9 @@ let loginVue = new Vue({
     }
   },
   methods: {
+    refreshKaptchaCode(){
+      document.getElementById("codeImg").src = "/user/getKaptchaCode?date="+new Date().valueOf();
+    }
 
 
   },
