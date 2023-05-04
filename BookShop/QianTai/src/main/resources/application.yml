@@ -22,6 +22,18 @@ spring:
         max-idle: 10
         min-idle: 3
         max-wait: 3000
+  mail:
+    host: smtp.qq.com
+    username: woniumrwang@qq.com  #用你自己的
+    password: hcyunfqbycnmgdca # 用你自己的 邮箱授权码
+    default-encoding: utf-8
+    port: 465
+    properties:
+      mail:
+        debug: true
+        smtp:
+          socketFactory:
+            class: javax.net.ssl.SSLSocketFactory
 
 mybatis-plus:
   # mapper.xml 文件路径
