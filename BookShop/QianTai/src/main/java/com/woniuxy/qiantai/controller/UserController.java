@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -123,10 +124,13 @@ public class UserController {
 
 
     @RequestMapping("getKaptchaCode")
-    public void getKaptchaCode(HttpServletResponse response) throws IOException {
+    public void getKaptchaCode(HttpServletResponse response, HttpServletRequest request) throws IOException {
 
         //生成验证码
         String code = producer.createText();
+
+        request.getSession().setAttribute("loginCode",code);
+
         //验证码图片
         BufferedImage bufferedImage = producer.createImage(code);
 
@@ -134,6 +138,45 @@ public class UserController {
         ImageIO.write(bufferedImage,"jpg",response.getOutputStream());
 
     }
+
+
+    @RequestMapping("login")
+    public String login(String username, String  password ,String  code,HttpServletRequest request){
+
+        String loginCode = (String)request.getSession().getAttribute("loginCode");
+        if (StringUtils.isEmpty(loginCode) || StringUtils.isEmpty(code) || !loginCode.equalsIgnoreCase(code)){
+            return "验证码错误,请重试";
+        }
+
+        User userByName = userService.getUserByName(username);
+        if (userByName==null || !userByName.getPassword().equals( Md5Util.encode(password) )){
+            return "用户名或密码错误";
+        }
+
+        //保存登录状态
+        request.getSession().setAttribute("currentUser",userByName.getAccount());
+
+        return "ok";
+    }
+
+
+    @RequestMapping("logout")
+    public String logout(HttpServletRequest request){
+
+        request.getSession().removeAttribute("currentUser");
+
+        return "ok";
+    }
+
+    @RequestMapping("currentUser")
+    public String currentUser(HttpServletRequest request){
+
+        String userName = (String)request.getSession().getAttribute("currentUser");
+        userName = StringUtils.isEmpty(userName) ? "" : userName;
+
+        return userName;
+    }
+
 
 
 }

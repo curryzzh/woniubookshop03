@@ -59,11 +59,13 @@
 
                 <!--菜单项-->
                 <div class="col-md-3">
-                    <a class="btn btn-default btn-sm" href="" @click.prevent="refreshPublicContent('/login')">登录</a>
-                    <a class="btn btn-default btn-sm" href="" @click.prevent="refreshPublicContent('/register')">注册</a>
-                    <a class="btn btn-default btn-sm" href="">我的购物车</a>
-                    <a class="btn btn-default btn-sm" href="">我的订单</a>
-                    <a class="btn btn-default btn-sm" href="">退出</a>
+                    <!--js里 ""等价于false  非""等价于true -->
+                    <a v-if="!currentUser" class="btn btn-default btn-sm" href="" @click.prevent="refreshPublicContent('/login')">登录</a>
+                    <a v-if="!currentUser" class="btn btn-default btn-sm" href="" @click.prevent="refreshPublicContent('/register')">注册</a>
+                    <span v-if="currentUser">欢迎您: {{currentUser}}</span>
+                    <a v-if="currentUser" class="btn btn-default btn-sm" href="">我的购物车</a>
+                    <a v-if="currentUser" class="btn btn-default btn-sm" href="">我的订单</a>
+                    <a v-if="currentUser" class="btn btn-default btn-sm" href="" @click="logout">退出</a>
                 </div>
 
             </div>
@@ -101,7 +103,8 @@
         el: "#publicHeader",
         data() {
             return {
-                bookTypeList:[]
+                bookTypeList:[],
+                currentUser:''
             }
         },
         methods: {
@@ -135,6 +138,17 @@
                 sessionStorage.setItem("bookType",JSON.stringify(type))
                 publicHeaderVue.refreshPublicContent("/booksOfType")
             }
+            ,
+            initCurrentUser(){
+                axios.postForm("/user/currentUser")
+                    .then( response => {
+                        publicHeaderVue.currentUser = response.data;
+                    })
+            }
+            ,
+            logout(){
+                axios.postForm("/user/logout")
+            }
         },
         created() {
             console.log("publicHeaderVue 对象创建完成了")
@@ -142,6 +156,8 @@
             this.refreshPublicContent("/topN")
 
             this.initBookTypeList();
+
+            this.initCurrentUser();
         }
 
     });

@@ -10,20 +10,20 @@
         <form>
           <div class="form-group">
             <label for="username">username</label>
-            <input type="text" name="username" class="form-control" id="username" placeholder="请输入用户名">
+            <input v-model="loginForm.username" type="text" name="username" class="form-control" id="username" placeholder="请输入用户名">
           </div>
           <div class="form-group">
             <label for="password">password</label>
-            <input type="password" name="password" class="form-control" id="password" placeholder="请输入密码">
+            <input v-model="loginForm.password" type="password" name="password" class="form-control" id="password" placeholder="请输入密码">
           </div>
 
           <div class="form-group">
             <label for="code">验证码</label>
-            <input type="text" name="code" class="form-control" id="code" placeholder="请输入验证码">
+            <input v-model="loginForm.code" type="text" name="code" class="form-control" id="code" placeholder="请输入验证码">
             <a @click.prevent="refreshKaptchaCode"><img src="/user/getKaptchaCode" alt="..." id="codeImg" />点击刷新</a>
           </div>
 
-          <button class="btn btn-success">登 录</button>
+          <button @click.prevent="toLogin" class="btn btn-success">登 录</button>
         </form>
       </div>
     </div>
