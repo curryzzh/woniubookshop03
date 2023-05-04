@@ -3,6 +3,7 @@ package com.woniuxy.qiantai.controller;
 
 import com.woniuxy.dal.entity.User;
 import com.woniuxy.servicelayer.service.UserService;
+import com.woniuxy.servicelayer.util.Md5Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.mail.SimpleMailMessage;
@@ -101,7 +102,8 @@ public class UserController {
         //通过校验,写入新用户
         User user = new User();
         user.setAccount(username);
-        user.setPassword(password);
+//        user.setPassword(password);
+        user.setPassword(Md5Util.encode(password));
         user.setEmail(email);
         user.setCreatetime(new Date());
         user.setUpdatetime(new Date());
