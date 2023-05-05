@@ -105,21 +105,33 @@ public class UserController {
             return "密码未填写或两次输入不一致";
         }
 
-        User userByName = userService.getUserByName(username);
-        if (userByName!=null){
-            return "用户名已经被占用";
-        }
+        synchronized (username.intern()) {  //同步锁,处理相同用户名注册的情况,避免多线程错误
 
-        //通过校验,写入新用户
-        User user = new User();
-        user.setAccount(username);
+            User userByName = userService.getUserByName(username);
+
+            try {
+                System.out.println(Thread.currentThread().getName());
+                System.out.println("模拟任务阻塞30s");
+                TimeUnit.SECONDS.sleep(30);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+
+            if (userByName != null) {
+                return "用户名已经被占用";
+            }
+
+            //通过校验,写入新用户
+            User user = new User();
+            user.setAccount(username);
 //        user.setPassword(password);
-        user.setPassword(Md5Util.encode(password));
-        user.setEmail(email);
-        user.setCreatetime(new Date());
-        user.setUpdatetime(new Date());
+            user.setPassword(Md5Util.encode(password));
+            user.setEmail(email);
+            user.setCreatetime(new Date());
+            user.setUpdatetime(new Date());
 
-        userService.save(user);
+            userService.save(user);
+        }
 
         return "ok";
     }
