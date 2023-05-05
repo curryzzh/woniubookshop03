@@ -30,6 +30,34 @@ public class CookieUtils {
         return null;
     }
 
+
+    /**
+     * 修改request中cookieName的value 为 newCookieValue
+     *
+     * @param request
+     * @param cookieName
+     * @param newCookieValue
+     * @return
+     */
+    public static Boolean refreshRequestCookie(HttpServletRequest request,String cookieName,String newCookieValue){
+
+        Boolean result = false;
+
+        Cookie[] cookies = request.getCookies();
+        if (cookies!=null && cookies.length>0){
+            for(Cookie cookie : cookies){
+                if (cookie.getName().equalsIgnoreCase(cookieName)){
+                    cookie.setValue(newCookieValue);
+                    result = true;
+                    break;
+                }
+            }
+        }
+
+        return result;
+    }
+
+
     public static void setUserToken2Cookie(HttpServletResponse response,String userToken){
         addCookie(response,"user_token",userToken,false);
     }
@@ -40,6 +68,10 @@ public class CookieUtils {
 
     public static void deleteUserTokenFromCookie(HttpServletResponse response){
         addCookie(response,"user_token",null,true);
+    }
+
+    public static Boolean refreshRequestUserToken(HttpServletRequest request,String userToken){
+        return refreshRequestCookie(request,"user_token",userToken);
     }
 
 

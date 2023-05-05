@@ -163,6 +163,8 @@ public class UserController {
         //JWT方案
         String token = JwtUtils.createToken(userByName.getAccount(), 30);
         CookieUtils.setUserToken2Cookie(response,token);
+        //同时保存一份关联数据
+        stringRedisTemplate.opsForValue().set(token,userByName.getAccount(),60L,TimeUnit.MINUTES);
 
         return "ok";
     }
@@ -175,6 +177,10 @@ public class UserController {
         //request.getSession().removeAttribute("currentUser");
 
         //JWT方案
+
+        String userTokenFromCookie = CookieUtils.getUserTokenFromCookie(request);
+        stringRedisTemplate.delete(userTokenFromCookie);
+
         CookieUtils.deleteUserTokenFromCookie(response);
 
         return "ok";
