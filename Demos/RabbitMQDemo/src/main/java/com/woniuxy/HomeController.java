@@ -48,6 +48,11 @@ public class HomeController {
             return "多消费者ok "+date;
         } else if (mqType==3) {
 
+            //生产者发送消息
+            String msg = "Fanout 交换机-广播模式 Msg "+date;
+            //这里的发送也是异步的
+            rabbitTemplate.convertAndSend("fanout_exchange","xx",msg);
+
             return "Fanout 交换机-广播模式 ok "+date;
         } else if (mqType==4) {
 
