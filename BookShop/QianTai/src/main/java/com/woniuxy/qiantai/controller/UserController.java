@@ -3,7 +3,9 @@ package com.woniuxy.qiantai.controller;
 
 import com.google.code.kaptcha.Producer;
 import com.woniuxy.dal.entity.User;
+import com.woniuxy.qiantai.utils.CookieUtils;
 import com.woniuxy.servicelayer.service.UserService;
+import com.woniuxy.servicelayer.util.JwtUtils;
 import com.woniuxy.servicelayer.util.Md5Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -141,7 +143,7 @@ public class UserController {
 
 
     @RequestMapping("login")
-    public String login(String username, String  password ,String  code,HttpServletRequest request){
+    public String login(String username, String  password ,String  code,HttpServletRequest request,HttpServletResponse response){
 
         String loginCode = (String)request.getSession().getAttribute("loginCode");
         if (StringUtils.isEmpty(loginCode) || StringUtils.isEmpty(code) || !loginCode.equalsIgnoreCase(code)){
@@ -154,16 +156,26 @@ public class UserController {
         }
 
         //保存登录状态
-        request.getSession().setAttribute("currentUser",userByName.getAccount());
+
+        //session方案
+        //request.getSession().setAttribute("currentUser",userByName.getAccount());
+
+        //JWT方案
+        String token = JwtUtils.createToken(userByName.getAccount(), 30);
+        CookieUtils.setUserToken2Cookie(response,token);
 
         return "ok";
     }
 
 
     @RequestMapping("logout")
-    public String logout(HttpServletRequest request){
+    public String logout(HttpServletRequest request,HttpServletResponse response){
 
-        request.getSession().removeAttribute("currentUser");
+        //Session方案
+        //request.getSession().removeAttribute("currentUser");
+
+        //JWT方案
+        CookieUtils.deleteUserTokenFromCookie(response);
 
         return "ok";
     }
@@ -171,8 +183,13 @@ public class UserController {
     @RequestMapping("currentUser")
     public String currentUser(HttpServletRequest request){
 
-        String userName = (String)request.getSession().getAttribute("currentUser");
-        userName = StringUtils.isEmpty(userName) ? "" : userName;
+        //session方案
+//        String userName = (String)request.getSession().getAttribute("currentUser");
+//        userName = StringUtils.isEmpty(userName) ? "" : userName;
+
+        //JWT方案
+        String userTokenFromCookie = CookieUtils.getUserTokenFromCookie(request);
+        String userName = JwtUtils.getAccountWithoutException(userTokenFromCookie);
 
         return userName;
     }
