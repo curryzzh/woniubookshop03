@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>主页</title>
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+  <script th:src="@{/vue.js}"></script>
+</head>
+<body>
+
+<div id="app">
+
+  <button @click="sendMsg(1)">单消费者</button><br/>
+  <span id="1"></span>
+  <hr/>
+  <hr/>
+  <button @click="sendMsg(2)">多消费</button><br/>
+  <span id="2"></span>
+  <hr/>
+  <hr/>
+  <button @click="sendMsg(3)">Fanout 交换机-广播模式</button><br/>
+  <span id="3"></span>
+  <hr/>
+  <hr/>
+  <button @click="sendMsg(4)">Direct 交换机-定向模式</button><br/>
+  <span id="4"></span>
+  <hr/>
+  <hr/>
+  <button @click="sendMsg(5)">Topic 交换机-模糊匹配模式</button><br/>
+  <span id="5"></span>
+  <hr/>
+  <hr/>
+
+
+
+</div>
+
+<script>
+
+  new Vue({
+    el:"#app",
+    data:{
+
+    },
+    methods:{
+      sendMsg(mqType){
+        $.get("/sendMsg",{mqType:mqType},function (data) {
+          let id = '#'+mqType;
+          $(id).html(data);
+        })
+      }
+
+    },
+    created(){
+
+    }
+  });
+
+
+</script>
+
+</body>
+</html>

@@ -22,6 +22,7 @@
         <module>Demos/MyBatisPlusDemo</module>
         <module>Demos/CacheDemo</module>
         <module>Demos/ThreadDemo</module>
+        <module>Demos/RabbitMQDemo</module>
     </modules>
 
     <properties>
