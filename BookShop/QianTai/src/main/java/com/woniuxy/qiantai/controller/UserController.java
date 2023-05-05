@@ -109,13 +109,13 @@ public class UserController {
 
             User userByName = userService.getUserByName(username);
 
-            try {
-                System.out.println(Thread.currentThread().getName());
-                System.out.println("模拟任务阻塞30s");
-                TimeUnit.SECONDS.sleep(30);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
+//            try {
+//                System.out.println(Thread.currentThread().getName());
+//                System.out.println("模拟任务阻塞30s");
+////                TimeUnit.SECONDS.sleep(30);
+//            } catch (InterruptedException e) {
+//                throw new RuntimeException(e);
+//            }
 
             if (userByName != null) {
                 return "用户名已经被占用";
@@ -132,6 +132,29 @@ public class UserController {
 
             userService.save(user);
         }
+
+
+        //多线程异步处理任务
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                //注册完成之后发送欢迎邮件
+                SimpleMailMessage message = new SimpleMailMessage();
+                message.setFrom("woniumrwang@qq.com");
+                message.setTo(email);
+                message.setSubject("注册成功");
+                message.setText("欢迎注册蜗牛书店,快去买买买吧~");
+
+                try {
+                    TimeUnit.SECONDS.sleep(25);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+
+                javaMailSender.send(message);
+            }
+        }).start();
 
         return "ok";
     }
