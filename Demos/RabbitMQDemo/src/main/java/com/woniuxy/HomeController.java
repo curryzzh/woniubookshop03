@@ -39,6 +39,12 @@ public class HomeController {
             return "单消费者ok "+date;
         } else if (mqType==2) {
 
+            //生产者发送消息
+            // 如果没有使用交换机的话,第二参数routingKey就代表的是队列名字
+            String msg = "多消费者 Msg "+date;
+            //这里的发送也是异步的
+            rabbitTemplate.convertAndSend("","works_queue",msg);
+
             return "多消费者ok "+date;
         } else if (mqType==3) {
 
