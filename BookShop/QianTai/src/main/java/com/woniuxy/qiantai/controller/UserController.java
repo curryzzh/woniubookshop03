@@ -80,7 +80,7 @@ public class UserController {
     private void sendEmail(String email, String subject, String content){
 
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom("woniumrwang@qq.com");
+        message.setFrom("853818394@qq.com");
         message.setTo(email);
         message.setSubject(subject);
         message.setText(content);
