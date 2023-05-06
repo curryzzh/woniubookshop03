@@ -9,6 +9,9 @@ import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class CartServiceImpl implements CartService {
 
@@ -44,6 +47,18 @@ public class CartServiceImpl implements CartService {
             opsForHash.put(currentUserId.toString(), bookId.toString(),cartItem);
         }
 
+    }
+
+    @Override
+    public List<CartItemVO> cartItemList(Long currentUserId) {
+        HashOperations<String, Object, Object> opsForHash = stringObjectRedisTemplate.opsForHash();
+
+        List<Object> values = opsForHash.values(currentUserId.toString());
+        List<CartItemVO> cartItemVOList = values.stream().map(obj -> {
+            return (CartItemVO) obj;
+        }).collect(Collectors.toList());
+
+        return cartItemVOList;
     }
 
 }
