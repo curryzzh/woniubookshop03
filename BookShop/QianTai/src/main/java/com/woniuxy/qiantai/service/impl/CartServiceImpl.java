@@ -9,6 +9,7 @@ import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -59,6 +60,21 @@ public class CartServiceImpl implements CartService {
         }).collect(Collectors.toList());
 
         return cartItemVOList;
+    }
+
+    @Override
+    public CartItemVO freshBuycount(Long currentUserId, Long bookId, Integer buyCount) {
+        HashOperations<String, Object, Object> opsForHash = stringObjectRedisTemplate.opsForHash();
+        CartItemVO cartItem = (CartItemVO)opsForHash.get(currentUserId.toString(), bookId.toString());
+        cartItem.setBuyCount(buyCount);
+        cartItem.setSumPrice( cartItem.getBookPrice().multiply(new BigDecimal(buyCount.toString())) );
+
+        if (buyCount==0){
+            opsForHash.delete(currentUserId.toString(),bookId.toString());
+        }else {
+            opsForHash.put(currentUserId.toString(), bookId.toString(), cartItem);
+        }
+        return cartItem;
     }
 
 }

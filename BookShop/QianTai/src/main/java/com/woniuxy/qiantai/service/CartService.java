@@ -8,4 +8,6 @@ public interface CartService {
     void addBook(Long bookId, Long currentUserId);
 
     List<CartItemVO> cartItemList(Long currentUserId);
+
+    CartItemVO freshBuycount(Long currentUserId, Long bookId, Integer buyCount);
 }

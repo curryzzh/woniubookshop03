@@ -9,7 +9,7 @@ let myCartVue = new Vue({
     }
   },
   methods: {
-    handleSelectionChange(val) {
+    handleSelectionChange(val) {  //处理选中项目发生变更时
       this.multipleSelection = val;
       console.log(this.multipleSelection)
 
@@ -19,14 +19,26 @@ let myCartVue = new Vue({
       }
       this.totalPrice=total;
     },
-    handleBuyCountChange(cartItem){
+    handleBuyCountChange(cartItem){  //购买量更新时
       //新的值
       console.log(cartItem)
-      cartItem.sumPrice = cartItem.bookPrice * cartItem.buyCount;
+      //cartItem.sumPrice = cartItem.bookPrice * cartItem.buyCount;
+      axios.postForm("/cart/freshBuycount",{bookId:cartItem.bookId,buyCount:cartItem.buyCount})
+          .then(response => {
+            let responseData = response.data;
+            cartItem.buyCount = responseData.buyCount;
+            cartItem.sumPrice = responseData.sumPrice;
+          })
 
     },
-    handleDelete(cartItem){
+    handleDelete(cartItem){  //点击删除按钮时
       console.log(cartItem)
+
+      axios.postForm("/cart/freshBuycount",{bookId:cartItem.bookId,buyCount:0})
+          .then(response => {
+            //做删除,不需要更新小计之类的
+          })
+
       this.$refs.multipleTable.toggleRowSelection(cartItem,false);
       for (let i = 0; i < this.cartItems.length; i++) {
         if (this.cartItems[i].bookId == cartItem.bookId){
@@ -35,11 +47,11 @@ let myCartVue = new Vue({
         }
       }
     },
-    toOrderPreview(){
+    toOrderPreview(){  //提交结算
       publicHeaderVue.refreshPublicContent("/orderPreview")
     }
     ,
-    initCartItems(){
+    initCartItems(){  //初始购物车信息
       axios.postForm("/cart/cartItemList")
           .then(response => {
              console.log(response.data)

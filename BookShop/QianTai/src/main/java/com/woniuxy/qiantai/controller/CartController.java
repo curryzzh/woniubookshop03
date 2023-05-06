@@ -47,6 +47,15 @@ public class CartController {
     }
 
 
+    @RequestMapping("freshBuycount")
+    public CartItemVO freshBuycount(Long bookId, Integer buyCount, HttpServletRequest request){
+        User currentUser = getCurrentUser(request);
+
+        return cartService.freshBuycount(currentUser.getId(),bookId,buyCount);
+    }
+
+
+
     private User getCurrentUser(HttpServletRequest request){
 
         String userTokenFromCookie = CookieUtils.getUserTokenFromCookie(request);
