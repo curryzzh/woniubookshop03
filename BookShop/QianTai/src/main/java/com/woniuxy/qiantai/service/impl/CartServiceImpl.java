@@ -9,6 +9,8 @@ import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -59,6 +61,45 @@ public class CartServiceImpl implements CartService {
         }).collect(Collectors.toList());
 
         return cartItemVOList;
+    }
+
+    @Override
+    public CartItemVO freshBuycount(Long currentUserId, Long bookId, Integer buyCount) {
+        HashOperations<String, Object, Object> opsForHash = stringObjectRedisTemplate.opsForHash();
+        CartItemVO cartItem = (CartItemVO)opsForHash.get(currentUserId.toString(), bookId.toString());
+        cartItem.setBuyCount(buyCount);
+        cartItem.setSumPrice( cartItem.getBookPrice().multiply(new BigDecimal(buyCount.toString())) );
+
+        if (buyCount==0){
+            opsForHash.delete(currentUserId.toString(),bookId.toString());
+        }else {
+            opsForHash.put(currentUserId.toString(), bookId.toString(), cartItem);
+        }
+        return cartItem;
+    }
+
+    @Override
+    public BigDecimal calculateTotalPrice(Long currentUserId, Long[] bookIds) {
+        HashOperations<String, Object, Object> opsForHash = stringObjectRedisTemplate.opsForHash();
+        List<Object> bookIdsString = Arrays.stream(bookIds).map(bookId -> {
+            return (Object) bookId.toString();
+        }).collect(Collectors.toList());
+
+        //查询出所有被选中的购物项
+        List<Object> books = opsForHash.multiGet(currentUserId.toString(), bookIdsString);
+
+        //计算总价
+        BigDecimal totalPrice = BigDecimal.ZERO;
+//        books.forEach(cartItem -> {
+//            totalPrice = totalPrice.add()
+//        });
+        for (int i = 0; i < books.size(); i++) {
+            Object obj = books.get(i);
+            CartItemVO cartItemVO = (CartItemVO)obj;
+            totalPrice = totalPrice.add( cartItemVO.getSumPrice() );
+        }
+
+        return totalPrice;
     }
 
 }

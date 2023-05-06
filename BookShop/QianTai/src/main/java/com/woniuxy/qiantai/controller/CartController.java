@@ -9,9 +9,11 @@ import com.woniuxy.servicelayer.util.JwtUtils;
 import com.woniuxy.servicelayer.vo.CartItemVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -45,6 +47,22 @@ public class CartController {
     public List<CartItemVO> cartItemList(HttpServletRequest request){
         return cartService.cartItemList(getCurrentUser(request).getId());
     }
+
+
+    @RequestMapping("freshBuycount")
+    public CartItemVO freshBuycount(Long bookId, Integer buyCount, HttpServletRequest request){
+        User currentUser = getCurrentUser(request);
+
+        return cartService.freshBuycount(currentUser.getId(),bookId,buyCount);
+    }
+
+    @RequestMapping("calculateTotalPrice")
+    public BigDecimal calculateTotalPrice(@RequestParam("bookIds[]") Long[] bookIds, HttpServletRequest request){
+        User currentUser = getCurrentUser(request);
+
+        return cartService.calculateTotalPrice(currentUser.getId(),bookIds);
+    }
+
 
 
     private User getCurrentUser(HttpServletRequest request){
