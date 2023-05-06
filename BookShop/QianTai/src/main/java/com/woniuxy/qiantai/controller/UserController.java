@@ -7,6 +7,7 @@ import com.woniuxy.qiantai.utils.CookieUtils;
 import com.woniuxy.servicelayer.service.UserService;
 import com.woniuxy.servicelayer.util.JwtUtils;
 import com.woniuxy.servicelayer.util.Md5Util;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.mail.SimpleMailMessage;
@@ -22,6 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -49,6 +51,9 @@ public class UserController {
 
     @Autowired
     Producer producer;
+
+    @Autowired
+    RabbitTemplate rabbitTemplate;
 
 
     @RequestMapping("/requestEmailCode")
@@ -133,6 +138,7 @@ public class UserController {
             userService.save(user);
         }
 
+/*
 
         //多线程异步处理任务
         new Thread(new Runnable() {
@@ -155,6 +161,17 @@ public class UserController {
                 javaMailSender.send(message);
             }
         }).start();
+*/
+
+        //使用MQ异步发送邮件
+        HashMap<String, String> infoMap = new HashMap<>();
+        infoMap.put("from","woniumrwang@qq.com");
+        infoMap.put("to",email);
+        infoMap.put("subject","注册成功");
+        infoMap.put("text","欢迎注册蜗牛书店,快去买买买吧~");
+
+        rabbitTemplate.convertAndSend("send_email_exchange","sendEmail",infoMap);
+
 
         return "ok";
     }
