@@ -165,7 +165,7 @@ public class UserController {
 
         //使用MQ异步发送邮件
         HashMap<String, String> infoMap = new HashMap<>();
-        infoMap.put("from","woniumrwang@qq.com");
+        infoMap.put("from","853818394@qq.com");
         infoMap.put("to",email);
         infoMap.put("subject","注册成功");
         infoMap.put("text","欢迎注册蜗牛书店,快去买买买吧~");
