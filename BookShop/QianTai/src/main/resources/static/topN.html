@@ -19,7 +19,7 @@
             <p>价格:<span v-text="book.price">price</span></p>
             <p>
               <a class="btn btn-primary" @click.prevent="seeBookDetailOf(book.id)" >详情</a> &nbsp;&nbsp;&nbsp;&nbsp;
-              <a class="btn btn-success" >加入购物车</a>
+              <a class="btn btn-success" @click.prevent="addToCart(book.id)">加入购物车</a>
             </p>
           </div>
         </div>

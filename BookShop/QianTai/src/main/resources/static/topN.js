@@ -32,6 +32,19 @@
           //切换页面到图书详情页
           publicHeaderVue.refreshPublicContent("/bookDetail")
       }
+      ,
+        addToCart(bookId){
+            if (!publicHeaderVue.currentUser){
+                alert("请先登录再加购")
+                return;
+            }
+
+            axios.postForm("/cart/addBook",{bookId:bookId})
+                .then( response => {
+                    alert(response.data)
+                } )
+
+        }
     },
     created() {
       console.log("topNVue 对象创建完成了")
