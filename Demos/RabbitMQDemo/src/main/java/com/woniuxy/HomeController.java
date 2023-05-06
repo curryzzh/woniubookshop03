@@ -56,6 +56,21 @@ public class HomeController {
             return "Fanout 交换机-广播模式 ok "+date;
         } else if (mqType==4) {
 
+
+            //生产者发送消息
+            String msg = "Direct 交换机-定向模式 Msg "+date;
+            //这里的发送也是异步的
+
+            String info = "info";
+            String error = "error";
+            String warning = "warning";
+
+
+            rabbitTemplate.convertAndSend("direct_exchange",info,msg+info);
+            rabbitTemplate.convertAndSend("direct_exchange",error,msg+error);
+            rabbitTemplate.convertAndSend("direct_exchange",warning,msg+warning);
+            rabbitTemplate.convertAndSend("direct_exchange","xx",msg+"xx");
+
             return "Direct 交换机-定向模式 ok "+date;
         } else if (mqType==5) {
 
