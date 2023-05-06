@@ -74,6 +74,19 @@ public class HomeController {
             return "Direct 交换机-定向模式 ok "+date;
         } else if (mqType==5) {
 
+
+
+            //生产者发送消息
+            String msg = "Topic 交换机-模糊匹配模式 Msg "+date;
+            //这里的发送也是异步的
+
+            rabbitTemplate.convertAndSend("topic_exchange","fast.orange.dog",msg+"fast.orange.dog");
+            rabbitTemplate.convertAndSend("topic_exchange","lazy.blue.chicken",msg+"lazy.blue.chicken");
+            rabbitTemplate.convertAndSend("topic_exchange","lazy.orange.cat",msg+"lazy.orange.cat");
+            rabbitTemplate.convertAndSend("topic_exchange","fast.blue.rabbit",msg+"fast.blue.rabbit");
+            rabbitTemplate.convertAndSend("topic_exchange","speed.green.rabbit",msg+"speed.green.rabbit");
+            rabbitTemplate.convertAndSend("topic_exchange","spedd.red.monkey",msg+"spedd.red.monkey");
+
             return "Topic 交换机-模糊匹配模式 "+date;
         }
 
