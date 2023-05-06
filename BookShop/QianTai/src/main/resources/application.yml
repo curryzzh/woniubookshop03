@@ -34,6 +34,16 @@ spring:
         smtp:
           socketFactory:
             class: javax.net.ssl.SSLSocketFactory
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: guest
+    password: guest
+    publisher-confirm-type: correlated  #开启confirm机制
+    publisher-returns: true   #开启return机制
+    listener:
+      simple:
+        acknowledge-mode: manual  #开启手动ack
 
 mybatis-plus:
   # mapper.xml 文件路径
