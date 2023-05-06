@@ -1,9 +1,9 @@
 
 <div id="myCart">
 
-    <el-empty description="还没有任何加购,快去购买吧~"></el-empty>
+    <el-empty v-if="cartItems.length < 1" description="还没有任何加购,快去购买吧~"></el-empty>
 
-    <div>
+    <div v-if="cartItems.length > 0">
         <el-table
                 ref="multipleTable"
                 :data="cartItems"

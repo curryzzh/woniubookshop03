@@ -3,31 +3,7 @@ let myCartVue = new Vue({
   el: "#myCart",
   data() {
     return {
-      cartItems:[{
-        bookId: 3,
-        bookName: 'name',
-        bookImgSrc: '/1.png',
-        bookPrice: 6.6,
-        buyCount:2,
-        sumPrice:13.2
-      },
-        {
-          bookId: 5,
-          bookName: 'name',
-          bookImgSrc: '/1.png',
-          bookPrice: 8.8,
-          buyCount:2,
-          sumPrice:17.6
-        }
-        ,
-        {
-          bookId: 6,
-          bookName: 'name',
-          bookImgSrc: '/1.png',
-          bookPrice: 9.9,
-          buyCount:2,
-          sumPrice:19.8
-        }],
+      cartItems:[],
       multipleSelection: [],
       totalPrice:0.00
     }
@@ -62,9 +38,19 @@ let myCartVue = new Vue({
     toOrderPreview(){
       publicHeaderVue.refreshPublicContent("/orderPreview")
     }
+    ,
+    initCartItems(){
+      axios.postForm("/cart/cartItemList")
+          .then(response => {
+             console.log(response.data)
+            myCartVue.cartItems = response.data;
+          })
+    }
   },
   created() {
     console.log("myCartVue 对象创建完成了")
+
+    this.initCartItems();
   }
 
 });
