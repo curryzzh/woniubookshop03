@@ -10,6 +10,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -75,6 +76,30 @@ public class CartServiceImpl implements CartService {
             opsForHash.put(currentUserId.toString(), bookId.toString(), cartItem);
         }
         return cartItem;
+    }
+
+    @Override
+    public BigDecimal calculateTotalPrice(Long currentUserId, Long[] bookIds) {
+        HashOperations<String, Object, Object> opsForHash = stringObjectRedisTemplate.opsForHash();
+        List<Object> bookIdsString = Arrays.stream(bookIds).map(bookId -> {
+            return (Object) bookId.toString();
+        }).collect(Collectors.toList());
+
+        //查询出所有被选中的购物项
+        List<Object> books = opsForHash.multiGet(currentUserId.toString(), bookIdsString);
+
+        //计算总价
+        BigDecimal totalPrice = BigDecimal.ZERO;
+//        books.forEach(cartItem -> {
+//            totalPrice = totalPrice.add()
+//        });
+        for (int i = 0; i < books.size(); i++) {
+            Object obj = books.get(i);
+            CartItemVO cartItemVO = (CartItemVO)obj;
+            totalPrice = totalPrice.add( cartItemVO.getSumPrice() );
+        }
+
+        return totalPrice;
     }
 
 }
