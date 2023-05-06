@@ -1,0 +1,73 @@
+
+<div id="myCart">
+
+    <el-empty description="还没有任何加购,快去购买吧~"></el-empty>
+
+    <div>
+        <el-table
+                ref="multipleTable"
+                :data="cartItems"
+                tooltip-effect="dark"
+                style="width: 80%;margin-left: 15%;margin-right: 5%;"
+                @selection-change="handleSelectionChange">
+            <el-table-column
+                    type="selection"
+                    width="50">
+            </el-table-column>
+            <el-table-column
+                    prop="bookName"
+                    label="图书名称"
+                    align="center"
+                    width="150">
+            </el-table-column>
+            <el-table-column
+                    label="图书图片"
+                    align="center"
+                    width="150">
+                <template slot-scope="scope">
+                    <img :src="scope.row.bookImgSrc" alt="..." style="width: 40px;height: 40px; border-radius: 50%"/>
+                </template>
+            </el-table-column>
+            <el-table-column
+                    prop="bookPrice"
+                    label="图书单价(元)"
+                    align="center"
+                    width="150">
+            </el-table-column>
+            <el-table-column
+                    label="购买量"
+                    align="center"
+                    width="150">
+                <template slot-scope="scope">
+                    <el-input-number style="width: 100px" size="small"  v-model="scope.row.buyCount" @change="handleBuyCountChange(scope.row)" :min="1" :max="100" label="购买量"></el-input-number>
+                </template>
+            </el-table-column>
+            <el-table-column
+                    prop="sumPrice"
+                    label="小计(元)"
+                    align="center"
+                    width="150">
+            </el-table-column>
+            <el-table-column
+                    label="操作"
+                    align="center"
+                    width="150">
+                <template slot-scope="scope">
+                    <el-button
+                            size="mini"
+                            type="danger"
+                            @click="handleDelete(scope.row)">删除</el-button>
+                </template>
+            </el-table-column>
+        </el-table>
+
+        <div style="margin-top: 10px;margin-left: 15%">
+            <span> <b> 总价(元): {{totalPrice}} </b> </span>
+            <br/>
+            <el-button @click.prevent="toOrderPreview" style="margin-left: 35%" type="success"> 结 算 </el-button>
+        </div>
+
+    </div>
+
+
+</div>

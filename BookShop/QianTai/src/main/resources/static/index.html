@@ -63,7 +63,7 @@
                     <a v-if="!currentUser" class="btn btn-default btn-sm" href="" @click.prevent="refreshPublicContent('/login')">登录</a>
                     <a v-if="!currentUser" class="btn btn-default btn-sm" href="" @click.prevent="refreshPublicContent('/register')">注册</a>
                     <span v-if="currentUser">欢迎您: {{currentUser}}</span>
-                    <a v-if="currentUser" class="btn btn-default btn-sm" href="">我的购物车</a>
+                    <a v-if="currentUser" class="btn btn-default btn-sm" href=""  @click.prevent="refreshPublicContent('/myCart')">我的购物车</a>
                     <a v-if="currentUser" class="btn btn-default btn-sm" href="">我的订单</a>
                     <a v-if="currentUser" class="btn btn-default btn-sm" href="" @click="logout">退出</a>
                 </div>
