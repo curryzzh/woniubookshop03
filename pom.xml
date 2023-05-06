@@ -23,6 +23,7 @@
         <module>Demos/CacheDemo</module>
         <module>Demos/ThreadDemo</module>
         <module>Demos/RabbitMQDemo</module>
+        <module>Demos/RabbitMQDemo2</module>
     </modules>
 
     <properties>

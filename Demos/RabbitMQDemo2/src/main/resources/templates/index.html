@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>主页</title>
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+  <script th:src="@{/vue.js}"></script>
+</head>
+<body>
+
+<div id="app">
+
+  exchangeName: <input v-model="exchangeName" type="text"/> <br/>
+  routingKey  : <input v-model="routingKey" type="text"/> <br/>
+  msg         : <input v-model="msg" type="text"/> <br/>
+  <button @click="send">发 送</button>
+
+</div>
+
+<script>
+
+  new Vue({
+    el:"#app",
+    data:{
+      exchangeName:'',
+      routingKey:'',
+      msg:''
+
+    },
+    methods:{
+      send(){
+        let params ={
+          exchangeName:this.exchangeName,
+          routingKey:this.routingKey,
+          msg:this.msg
+        }
+
+        $.get("/send",params,function (data) {
+          alert(data)
+        })
+
+      }
+
+    },
+    created(){
+
+    }
+  });
+
+
+</script>
+
+</body>
+</html>
