@@ -1,5 +1,6 @@
 package com.woniuxy.config;
 
+import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.connection.CorrelationData;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.InitializingBean;
@@ -25,6 +26,20 @@ public class RabbitMQConfig implements InitializingBean {
                 System.out.println("cause ack为false时代表mq没有正常拿到消息的原因 "+cause);
             }
         });
+
+
+        //return机制
+        rabbitTemplate.setReturnCallback(new RabbitTemplate.ReturnCallback() {
+            @Override
+            public void returnedMessage(Message message, int replyCode, String replyText, String exchange, String routingKey) {
+                System.out.println("message "+message);
+                System.out.println("replyCode "+replyCode);
+                System.out.println("replyText "+replyText);
+                System.out.println("exchange "+exchange);
+                System.out.println("routingKey "+routingKey);
+            }
+        });
+        rabbitTemplate.setMandatory(true);  //补充设置
 
     }
 
