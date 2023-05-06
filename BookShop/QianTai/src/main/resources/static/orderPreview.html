@@ -1,0 +1,122 @@
+
+<div id="orderPreview">
+
+    <el-select v-model="addressId" clearable  placeholder="请选择收货地址" style="margin-left: 25%;">
+        <el-option
+                v-for="item in options"
+                :key="item.id"
+                :label="item.detail"
+                :value="item.id">
+        </el-option>
+    </el-select>
+
+    <el-button plain  @click="dialogFormVisible = true">新增地址</el-button>
+
+        <el-table
+                ref="multipleTable"
+                :data="cartItems"
+                tooltip-effect="dark"
+                style="width: 70%;margin-left: 25%;margin-right: 5%;margin-top: 15px">
+            <el-table-column
+                    prop="bookName"
+                    label="图书名称"
+                    align="center"
+                    width="150">
+            </el-table-column>
+            <el-table-column
+                    label="图书图片"
+                    align="center"
+                    width="150">
+                <template slot-scope="scope">
+                    <img :src="scope.row.bookImgSrc" alt="..." style="width: 40px;height: 40px; border-radius: 50%"/>
+                </template>
+            </el-table-column>
+            <el-table-column
+                    prop="bookPrice"
+                    label="图书单价(元)"
+                    align="center"
+                    width="150">
+            </el-table-column>
+            <el-table-column
+                    prop="buyCount"
+                    label="购买量"
+                    align="center"
+                    width="150">
+            </el-table-column>
+            <el-table-column
+                    prop="sumPrice"
+                    label="小计(元)"
+                    align="center"
+                    width="150">
+            </el-table-column>
+        </el-table>
+
+        <div style="margin-top: 10px;margin-left: 25%">
+            <span> <b> 总价(元): xxx </b> </span>
+            <br/>
+            <el-button style="margin-left: 35%" type="success"> 提交订单 </el-button>
+        </div>
+
+    <el-dialog title="收货地址" :close-on-click-modal="closeOnClickModal" :visible.sync="dialogFormVisible">
+
+        <form>
+            <div class="form-group">
+                <label for="provinceId">省</label>
+                <select class="form-control" id="provinceId" placeholder="请选择省份">
+                    <option value="-1">请选择省份</option>
+                    <option value="">A</option>
+                    <option value="">B</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="cityId">市</label>
+                <select class="form-control" id="cityId" placeholder="请选择城市" >
+                    <option value="-1">请选择城市</option>
+                    <option value="">A</option>
+                    <option value="">B</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="areaId">区</label>
+                <select class="form-control" id="areaId" placeholder="请选择区域" >
+                    <option value="-1">请选择区域</option>
+                    <option value="">A</option>
+                    <option value="">B</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="detailAddress">详细地址</label>
+                <input type="text" class="form-control" id="detailAddress" placeholder="请输入详细地址">
+            </div>
+
+            <div class="form-group">
+                <label for="tel">手机号</label>
+                <input type="text"  class="form-control" id="tel" placeholder="请输入手机号">
+            </div>
+
+            <div class="form-group">
+                <label for="reciever">收件人姓名</label>
+                <input type="text"  class="form-control" id="reciever" placeholder="请输入收件人">
+            </div>
+            <div class="form-group">
+                <label for="code">邮编</label>
+                <input type="text"  class="form-control" id="code" placeholder="请输入邮编">
+            </div>
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" id="isDefault" > 是否默认
+                </label>
+            </div>
+        </form>
+
+
+        <div slot="footer" class="dialog-footer">
+            <el-button @click="dialogFormVisible = false">取 消</el-button>
+            <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+        </div>
+    </el-dialog>
+
+
+</div>
