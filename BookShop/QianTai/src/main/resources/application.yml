@@ -14,7 +14,7 @@ spring:
       poolPreparedStatements: true
       maxOpenPreparedStatements: 20
   redis:
-    host: 192.168.217.138
+    host: 192.168.174.101
     port: 6379
     jedis:
       pool:
@@ -25,7 +25,7 @@ spring:
   mail:
     host: smtp.qq.com
     username: 853818394@qq.com  #用你自己的
-    password: hcyunfqbycnmgdca # 用你自己的 邮箱授权码
+    password: vhhvfoxqmrfvbbdd # 用你自己的 邮箱授权码
     default-encoding: utf-8
     port: 465
     properties:
