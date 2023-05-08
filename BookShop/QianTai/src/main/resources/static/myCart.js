@@ -58,6 +58,17 @@ let myCartVue = new Vue({
 
     },
     toOrderPreview(){  //提交结算
+
+      //至少一个计算项
+      if(this.multipleSelection.length<1){
+          alert("至少选中一个结算项")
+          return
+      }
+
+        //携带 当前的选中项以及总价信息到订单预览页去
+      sessionStorage.setItem("multipleSelection",JSON.stringify(this.multipleSelection));
+      sessionStorage.setItem("totalPrice",this.totalPrice)
+
       publicHeaderVue.refreshPublicContent("/orderPreview")
     }
     ,

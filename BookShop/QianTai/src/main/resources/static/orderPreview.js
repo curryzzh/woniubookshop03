@@ -3,7 +3,8 @@ let orderPreview = new Vue({
   el: "#orderPreview",
   data() {
     return {
-      addressId:'',
+      addressId:'',  //选中地址的id
+      //地址可选项
       options: [{
         id: 1,
         detail: '地址AAAAAAAA'
@@ -14,31 +15,29 @@ let orderPreview = new Vue({
         id: 3,
         detail: '地址CCCCCCCCCC'
       }],
-      cartItems:[{
-        bookId: 3,
-        bookName: 'name',
-        bookImgSrc: '/1.png',
-        bookPrice: 6.6,
-        buyCount:2,
-        sumPrice:13.2
-      },
-        {
-          bookId: 5,
-          bookName: 'name',
-          bookImgSrc: '/1.png',
-          bookPrice: 6.6,
-          buyCount:2,
-          sumPrice:13.2
-        }]
+      //选中的购物项
+      cartItems:[]
       ,
+      //新增地址模态框相关的
       dialogFormVisible: false,
-      closeOnClickModal: false
+      closeOnClickModal: false,
+      totalPrice:"0.00"
     }
   },
   methods: {
 
   },
   created() {
+
+    let selectionBooks = JSON.parse( sessionStorage.getItem("multipleSelection") );
+    let totalPrice = sessionStorage.getItem("totalPrice")
+
+    console.log(selectionBooks)
+    console.log(totalPrice)
+
+    this.cartItems = selectionBooks;
+    this.totalPrice = totalPrice;
+
     console.log("orderPreviewVue 对象创建完成了")
   }
 
