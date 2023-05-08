@@ -156,6 +156,7 @@ let orderPreviewVue = new Vue({
       console.log(this.addressId)
       console.log(bookIds)
 
+      publicHeaderVue.refreshPublicContent("/myOrders")
     }
 
 
