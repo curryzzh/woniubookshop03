@@ -10,7 +10,7 @@
         </el-option>
     </el-select>
 
-    <el-button plain  @click="dialogFormVisible = true">新增地址</el-button>
+    <el-button plain  @click="showAddAddressForm">新增地址</el-button>
 
         <el-table
                 ref="multipleTable"
@@ -106,7 +106,7 @@
             </div>
             <div class="checkbox">
                 <label>
-                    <input v-model="addAddressForm.isDefault" type="checkbox" id="isDefault" > 是否默认
+                    <input v-model="isDefaultAddress" type="checkbox" id="isDefault" > 是否默认
                 </label>
             </div>
         </form>
@@ -114,7 +114,7 @@
 
         <div slot="footer" class="dialog-footer">
             <el-button @click="dialogFormVisible = false">取 消</el-button>
-            <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+            <el-button type="primary" @click.prevent="submitAddAddressForm">确 定</el-button>
         </div>
     </el-dialog>
 
