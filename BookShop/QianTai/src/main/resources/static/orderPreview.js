@@ -156,7 +156,20 @@ let orderPreviewVue = new Vue({
       console.log(this.addressId)
       console.log(bookIds)
 
-      publicHeaderVue.refreshPublicContent("/myOrders")
+      let params = {
+        addressId:this.addressId,
+        bookIds:bookIds
+      }
+      axios.postForm("/order/create",params)
+          .then(response => {
+            let responseData = response.data;
+            if (responseData == "ok"){
+              publicHeaderVue.refreshPublicContent("/myOrders")
+            }else {
+              alert(responseData)
+            }
+          })
+
     }
 
 
