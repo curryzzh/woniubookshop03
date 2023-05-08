@@ -3,7 +3,7 @@
 
     <el-select v-model="addressId" clearable  placeholder="请选择收货地址" style="margin-left: 25%;">
         <el-option
-                v-for="item in options"
+                v-for="item in addressList"
                 :key="item.id"
                 :label="item.detail"
                 :value="item.id">
@@ -54,7 +54,7 @@
         <div style="margin-top: 10px;margin-left: 25%">
             <span> <b> 总价(元): {{totalPrice}} </b> </span>
             <br/>
-            <el-button style="margin-left: 35%" type="success"> 提交订单 </el-button>
+            <el-button @click="submitOrder" style="margin-left: 35%" type="success"> 提交订单 </el-button>
         </div>
 
     <el-dialog title="收货地址" :close-on-click-modal="closeOnClickModal" :visible.sync="dialogFormVisible">

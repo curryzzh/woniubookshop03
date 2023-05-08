@@ -5,16 +5,7 @@ let orderPreviewVue = new Vue({
     return {
       addressId:'',  //选中地址的id
       //地址可选项
-      options: [{
-        id: 1,
-        detail: '地址AAAAAAAA'
-      }, {
-        id: 2,
-        detail: '地址BBBBBBBBBB'
-      }, {
-        id: 3,
-        detail: '地址CCCCCCCCCC'
-      }],
+      addressList: [],
       //选中的购物项
       cartItems:[],
       totalPrice:"0.00",
@@ -104,6 +95,7 @@ let orderPreviewVue = new Vue({
       axios.post("/address/add",this.addAddressForm)
           .then( response => {
             orderPreviewVue.dialogFormVisible = false;
+            orderPreviewVue.initAddressList()
           })
 
     }
@@ -129,6 +121,42 @@ let orderPreviewVue = new Vue({
       //显示表单
       this.dialogFormVisible = true;
     }
+    ,
+    initAddressList(){
+      axios.postForm("/address/list")
+          .then( response => {
+            let addressList = response.data;
+            for (let i = 0; i < addressList.length; i++) {
+              let item = addressList[i];
+              item.detail = item.province + item.city +item.area +item.detailAddress+"    " +item.reciver;
+
+              //确认默认地址
+              if (item.isDefault == "1"){
+                orderPreviewVue.addressId = item.id;
+              }
+
+            }
+
+            orderPreviewVue.addressList = addressList;
+          })
+    }
+    ,
+    submitOrder(){
+
+      if (!this.addressId){
+        alert("请选择收货地址后再提交")
+        return
+      }
+
+      let bookIds = []
+      for (let i = 0; i < this.cartItems.length; i++) {
+        bookIds.push(this.cartItems[i].bookId)
+      }
+
+      console.log(this.addressId)
+      console.log(bookIds)
+
+    }
 
 
   },
@@ -147,6 +175,7 @@ let orderPreviewVue = new Vue({
 
     //初始化数据
     this.initProvinceLsit();
+    this.initAddressList();
 
   }
 
