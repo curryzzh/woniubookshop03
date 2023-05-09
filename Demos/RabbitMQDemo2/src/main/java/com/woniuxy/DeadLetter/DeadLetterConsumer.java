@@ -6,13 +6,14 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.Date;
 
 @Component
 public class DeadLetterConsumer {
 
     @RabbitListener(queues = "deadletter_queue")
     public void onMsg(String msg, Message message, Channel channel) throws IOException {
-        System.out.println("DeadLetterConsumer 接收到消息 "+msg);
+        System.out.println(new Date()+"DeadLetterConsumer 接收到消息 "+msg);
 
         System.out.println("执行逻辑: 如果订单未支付,那就取消订单;  否则啥也不干,当我没来过");
 
