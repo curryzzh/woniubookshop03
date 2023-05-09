@@ -2,7 +2,9 @@
   <div id="app">
     <img alt="Vue logo" src="./assets/logo.png">
     <HelloWorld msg="Welcome 2222 to Your Vue.js App"/>
-    <User name="蜗牛" age="18"/>
+    <User ref="myUser" name="蜗牛" age="18"/>
+
+    <button @click="testRef">testRef</button>
   </div>
 </template>
 
@@ -17,6 +19,13 @@ export default {
   components: {  //声明引用的外部组件
     HelloWorld   //例如这里是使用的HelloWorld组件 等效于 HelloWorld:HelloWorld
     ,User
+  },
+  methods:{
+    testRef(){
+      console.log(this.$refs.myUser)
+      console.log(this.$refs.myUser.detail)
+      this.$refs.myUser.showDetail();
+    }
   }
 }
 </script>

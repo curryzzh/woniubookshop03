@@ -3,10 +3,11 @@
   <div>
     我是User  我叫{{name}}  我{{age}}岁了
 
-    <p>{{detail}}</p>
+    <p ref="detailP">{{detail}}</p>
     <br/>
+    <span ref="mySpan">原始值</span>
 
-    <button @click="showDetail">showDetail</button>
+    <button ref="myBtn" @click="showDetail">showDetail</button>
   </div>
 
 </template>
@@ -29,6 +30,12 @@ export default {
   methods:{
     showDetail(){
       alert(this.detail)
+
+
+      console.log(this.$refs)
+      console.log(this.$refs.myBtn)
+      this.$refs.mySpan.innerHTML= new Date().toString()
+
     }
   }
   ,
