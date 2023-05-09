@@ -6,6 +6,16 @@
 
     <button @click="testRef">testRef</button>
     <button @click="testParentAndChildren">testAppParentAndChildren</button>
+    <button @click="toManager">toManager</button>
+    <br/>
+    <hr/>
+
+    <router-link to="/">首页</router-link>---
+    <router-link to="/Goods">货物</router-link>---
+    <router-link to="/Manager">管理</router-link>
+
+    <!--在router-view中渲染当前路由对应的组件-->
+    <router-view></router-view>
   </div>
 </template>
 
@@ -22,6 +32,15 @@ export default {
     ,User
   },
   methods:{
+    toManager(){
+      this.$router.push({
+        name:"Manager",
+        params:{
+          name:"pushName",
+          pass:"pushPass"
+        }
+      })
+    },
     testRef(){
       console.log(this.$refs.myUser)
       console.log(this.$refs.myUser.detail)

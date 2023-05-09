@@ -17,25 +17,20 @@
                 <div >
                     <div class="row" style="height: 40px ;line-height: 40px">
                         <div class="col-md-12">
-                            <p style="background-color: #CCCCCC; font-size: 15px; line-height: 40px">订单编号:xxx 下单时间:xxx  总金额:xxx元</p>
+                            <p style="background-color: #CCCCCC; font-size: 15px; line-height: 40px">订单编号:{{order.orderNum}} 下单时间:{{order.createtime}}
+                                总金额:{{order.totalprice}}元</p>
                         </div>
                     </div>
                     <div class="row p-3">
                         <div class="col-md-10 col-md-offset-1">
                             <table class="table">
-                                <tr>
-                                    <th>图片</th>
-                                    <th>名称</th>
-                                    <th>购买数量</th>
-                                    <th>金额</th>
-                                </tr>
-                                <tr >
+                                <tr v-for="oi in orderItems">
                                     <td>
-                                        <img style="height: 60px;width: 60px" src="" alt="...">
+                                        <img :src="oi.imgsrc" style="height: 60px;width: 60px" alt="...">
                                     </td>
-                                    <td  style="vertical-align: middle">名称</td>
-                                    <td  style="vertical-align: middle">购买数量</td>
-                                    <td  style="vertical-align: middle">金额</td>
+                                    <td style="vertical-align: middle">{{oi.bookName}}</td>
+                                    <td style="vertical-align: middle">{{oi.bcount}}</td>
+                                    <td style="vertical-align: middle">{{oi.sumprice}}</td>
                                 </tr>
                             </table>
                         </div>

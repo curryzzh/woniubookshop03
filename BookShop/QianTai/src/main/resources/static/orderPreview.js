@@ -142,7 +142,6 @@ let orderPreviewVue = new Vue({
     }
     ,
     submitOrder(){
-
       if (!this.addressId){
         alert("请选择收货地址后再提交")
         return
@@ -163,7 +162,8 @@ let orderPreviewVue = new Vue({
       axios.postForm("/order/create",params)
           .then(response => {
             let responseData = response.data;
-            if (responseData == "ok"){
+            if (responseData.split("-")[0] === "ok"){
+              sessionStorage.setItem("orderId", responseData.split("-")[1])
               publicHeaderVue.refreshPublicContent("/myOrders")
             }else {
               alert(responseData)
