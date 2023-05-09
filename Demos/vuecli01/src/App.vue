@@ -1,18 +1,29 @@
 <template>
+
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <router-link to="/">首页</router-link>---
+    <router-link to="/Goods">货物</router-link>---
+    <router-link to="/Manager">管理</router-link>---
+
+    <router-link to="/User">用户</router-link>
+    <!--在router-view中渲染当前路由对应的组件-->
+    <router-view></router-view>
+
   </div>
+
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+// import HelloWorld from './components/HelloWorld.vue'
+
+import User from "./routerviews/User.vue";
 
 export default {
   name: 'App',
-  components: {
-    HelloWorld
-  }
+  components: {User},
+  // components: {
+  //   HelloWorld
+  // }
 }
 </script>
 
