@@ -8,6 +8,7 @@
     <span ref="mySpan">原始值</span>
 
     <button ref="myBtn" @click="showDetail">showDetail</button>
+    <button @click="testParentAndChildren">testUserParentAndChildren</button>
   </div>
 
 </template>
@@ -36,6 +37,10 @@ export default {
       console.log(this.$refs.myBtn)
       this.$refs.mySpan.innerHTML= new Date().toString()
 
+    },
+    testParentAndChildren(){
+      console.log(this.$parent)
+      console.log(this.$children)
     }
   }
   ,

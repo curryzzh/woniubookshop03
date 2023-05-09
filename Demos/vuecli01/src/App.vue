@@ -5,6 +5,7 @@
     <User ref="myUser" name="蜗牛" age="18"/>
 
     <button @click="testRef">testRef</button>
+    <button @click="testParentAndChildren">testAppParentAndChildren</button>
   </div>
 </template>
 
@@ -25,6 +26,10 @@ export default {
       console.log(this.$refs.myUser)
       console.log(this.$refs.myUser.detail)
       this.$refs.myUser.showDetail();
+    },
+    testParentAndChildren(){
+      console.log(this.$parent)
+      console.log(this.$children)
     }
   }
 }
