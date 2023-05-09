@@ -1,28 +1,10 @@
-import Vue from 'vue'
-import App from './App.vue'
-import './registerServiceWorker'
-//引入并使用路由插件
-import VueRouter from "vue-router";
-Vue.use(VueRouter)
+import Vue from 'vue'    //导入vue
+import App from './App.vue'  //导入自定义组件App
+import './registerServiceWorker'   //导入其它的js配置
 
-//引入路由要使用的组件
-import Goods from "@/routerviews/Goods.vue";
-import Index from "@/routerviews/Index.vue";
-import Manager from "@/routerviews/Manager.vue";
-import User from "@/routerviews/User.vue";
-Vue.config.productionTip = false
-//创建路由对象
-let router = new VueRouter({
-  routes:[
-    {path:"/",name:"Index",component:Index},
-    {path:"/Goods",name:"Goods",component:Goods},
-    {path:"/Manager",name:"Manager",component:Manager},
-    {path:"/User",name:"User",component:User}
-  ],
-  mode:"history"
-})
+Vue.config.productionTip = false  //生产环境时关闭一些不必要的提示
 
+//创建Vue对象
 new Vue({
-  render: h => h(App),
-  router
-}).$mount('#app')
+  render: h => h(App),  //渲染自定义的App组件
+}).$mount('#app')  //vue对象挂载到id为app的元素
